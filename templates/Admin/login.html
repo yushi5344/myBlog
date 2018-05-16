@@ -89,7 +89,7 @@
                         console.log(res);
                         if(res.status){
                             layer.msg('登录成功，正在跳转...');
-                            {#window.location="";#}
+                            window.location="/admin/index/";
                         }else{
                             layer.alert(res.msg, {
                                 skin: 'layui-layer-molv' //样式类名
