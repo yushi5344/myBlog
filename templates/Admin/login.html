@@ -41,13 +41,13 @@
             <div class="row cl">
                 <div class="formControls col-xs-8 col-xs-offset-3">
                     <label for="online">
-                        <input type="checkbox" name="online" id="online" value="">
+                        <input type="checkbox" name="online" id="online" value="1">
                         两周内免登陆</label>
                 </div>
             </div>
             <div class="row cl">
                 <div class="formControls col-xs-8 col-xs-offset-3">
-                    <input name="" type="button" class="btn btn-success radius size-L"
+                    <input name="" type="submit" class="btn btn-success radius size-L"
                            value="&nbsp;登&nbsp;&nbsp;&nbsp;&nbsp;录&nbsp;">
                     <input name="" type="reset" class="btn btn-default radius size-L"
                            value="&nbsp;重&nbsp;&nbsp;&nbsp;&nbsp;置&nbsp;">
@@ -84,16 +84,17 @@
                 $(form).ajaxSubmit({
                     url:"/admin/login/",
                     type:'post',
-                    success:function(resp){
-                        if(resp!=0){
-                            layer.alert(resp, {
+                    dataType:'json',
+                    success:function(res){
+                        console.log(res);
+                        if(res.status){
+                            layer.msg('登录成功，正在跳转...');
+                            {#window.location="";#}
+                        }else{
+                            layer.alert(res.msg, {
                                 skin: 'layui-layer-molv' //样式类名
                                 ,closeBtn: 0
                             });
-                            $('.vcodeimg').trigger('click');
-                        }else{
-                            layer.msg('登录成功，正在跳转...');
-                            window.location="";
                         }
                     }
                 });
