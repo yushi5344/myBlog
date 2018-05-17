@@ -16,3 +16,11 @@ class LoginLog(models.Model):
     u=models.ForeignKey("AdminUser",to_field="id",on_delete=models.CASCADE,null=True)
     login_time=models.DateTimeField(auto_now_add=True)
     login_ip=models.GenericIPAddressField(null=True)
+
+
+#栏目分类
+class Cate(models.Model):
+    id=models.AutoField(primary_key=True)
+    p_id=models.IntegerField(null=True)
+    name=models.CharField(max_length=40)
+    type=models.CharField(max_length=40)
