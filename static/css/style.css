@@ -1,3 +1,40 @@
-@charset "utf-8";
-/* 你自己的样式 */
+.pagination {
+    padding-top: 10px;
+    text-align: right;
+}
 
+.pagination li {
+    display: inline-block;
+}
+.pagination .disabled span{
+    background: rgb(255, 255, 255);
+    color: rgb(102, 102, 102);
+}
+.pagination li a {
+    border: 1px solid #ccc;
+    cursor: pointer;
+    display: inline-block;
+    text-align: center;
+    text-decoration: none;
+    color: #666;
+    height: 26px;
+    line-height: 26px;
+    margin: 0 0 6px 6px;
+    padding: 0 10px;
+    font-size: 14px;
+}
+
+.pagination li span {
+    border: 1px solid #ccc;
+    cursor: pointer;
+    display: inline-block;
+    text-align: center;
+    text-decoration: none;
+    height: 26px;
+    line-height: 26px;
+    margin: 0 0 6px 6px;
+    padding: 0 10px;
+    font-size: 14px;
+    background: #5a98de;
+    color: #fff;
+}

@@ -24,3 +24,4 @@ class Cate(models.Model):
     p_id=models.IntegerField(null=True)
     name=models.CharField(max_length=40)
     type=models.CharField(max_length=40)
+    level=models.IntegerField(null=True)
