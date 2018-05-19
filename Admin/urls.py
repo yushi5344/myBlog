@@ -8,4 +8,6 @@ urlpatterns = [
     path('image/',image.Image.as_view()),
     path('category/',category.Category.as_view()),
     path('cate_add/',category.cate_add),
+    re_path('cate_edit-(?P<id>\d+)', category.cate_edit),
+    re_path('cate_delete-(?P<id>\d+)', category.cate_delete),
 ]
