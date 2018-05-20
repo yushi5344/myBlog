@@ -10,4 +10,6 @@ urlpatterns = [
     path('cate_add/',category.cate_add),
     re_path('cate_edit-(?P<id>\d+)', category.cate_edit),
     re_path('cate_delete-(?P<id>\d+)', category.cate_delete),
+    path('image_add/', image.image_add),
+    path('upload/', image.upload),
 ]
