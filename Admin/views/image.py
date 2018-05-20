@@ -1,11 +1,26 @@
 from django.shortcuts import render,HttpResponse
 from django.views import View
 from Admin.models import Cate,Image as mImage
+from django.core.paginator import Paginator,PageNotAnInteger,EmptyPage
 import json
 import os
 class Image(View):
     def get(self,request):
-        return render(request,'Admin/image.html')
+        image=mImage.objects.all().values('id','title','thumb','tags','add_time','status','c__name')
+        print(image)
+        pagesize = request.COOKIES.get('pagesize', None)
+        if not pagesize:
+            pagesize=2
+        paginator=Paginator(image,pagesize)
+        page=request.GET.get('page')
+        count=image.count()
+        try:
+            contacts=paginator.page(page)
+        except PageNotAnInteger:
+            contacts=paginator.page(1)
+        except EmptyPage:
+            contacts=paginator.page(paginator.num_pages)
+        return render(request,'Admin/image.html',{'image':contacts,'count':count})
 
 
 def image_add(request):

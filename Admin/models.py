@@ -29,7 +29,7 @@ class Cate(models.Model):
 #图片
 class Image(models.Model):
     id=models.AutoField(primary_key=True)
-    c=models.ForeignKey('LoginLog',to_field='id',on_delete=models.CASCADE,null=True)
+    c=models.ForeignKey('Cate',to_field='id',on_delete=models.CASCADE,null=True)
     title=models.CharField(max_length=40)
     tags=models.CharField(max_length=255)
     img_url=models.TextField(null=True)
