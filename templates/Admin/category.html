@@ -17,8 +17,8 @@
 
 <div class="page-container">
 	<div class="text-c">
-		<input type="text" name="" id="" placeholder="栏目名称" style="width:250px" class="input-text">
-		<button name="" id="" class="btn btn-success" type="submit"><i class="Hui-iconfont">&#xe665;</i> 搜索</button>
+		<input type="text" name="searchName" id="searchName" placeholder="栏目名称" style="width:250px" class="input-text">
+		<button name="" id="searchbutton" class="btn btn-success" type="submit"><i class="Hui-iconfont">&#xe665;</i> 搜索</button>
 	</div>
 	<div class="cl pd-5 bg-1 bk-gray mt-20">
 		<span class="l">
@@ -95,6 +95,15 @@ $(function () {
     $('#pagesize').change(function(){
         var pagesize=$(this).val();
         $.cookie('pagesize', pagesize,{path:'admin/category'});
+        window.location.reload();
+    });
+    p=$.cookie('searchName');
+        if (p!=undefined){
+            $('#searchName').val(p);
+        }
+    $('#searchbutton').click(function () {
+        var searchName=$('#searchName').val();
+        $.cookie('searchName',searchName,{path:'admin/category'});
         window.location.reload();
     });
 });
