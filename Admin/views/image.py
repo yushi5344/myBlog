@@ -81,3 +81,8 @@ def upload(request):
         ret['status'] = False
         ret['msg'] = '上传失败'
     return HttpResponse(json.dumps(ret))
+
+def image_delete(request,id):
+    result=mImage.objects.filter(id=id).delete()
+    ret = {'status': True, 'msg': '删除成功'}
+    return HttpResponse(json.dumps(ret))
