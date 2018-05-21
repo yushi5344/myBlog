@@ -9,10 +9,11 @@
 <div class="page-container">
 	<form class="form form-horizontal" id="form-image-add">
         {% csrf_token %}
+        <input type="hidden" value="{{ image.id }}" name="id">
 		<div class="row cl">
 			<label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>图片标题：</label>
 			<div class="formControls col-xs-8 col-sm-9">
-				<input type="text" class="input-text" value="" placeholder="" id="" name="title">
+				<input type="text" class="input-text" value="{{ image.title }}" placeholder="" id="" name="title">
 			</div>
 		</div>
 		<div class="row cl">
@@ -21,7 +22,7 @@
 				<span class="select-box">
 				<select name="c_id" class="select">
                     {% for foo in cate %}
-                    <option value="{{ foo.id }}">{{ foo.name }}</option>
+                    <option value="{{ foo.id }}" {% ifequal foo.id image.c_id %} selected {% endifequal %}>{{ foo.name }}</option>
                     {% endfor %}
 				</select>
 				</span>
@@ -30,14 +31,14 @@
 		<div class="row cl">
 			<label class="form-label col-xs-4 col-sm-2">排序值：</label>
 			<div class="formControls col-xs-8 col-sm-9">
-				<input type="text" class="input-text" value="1" placeholder="" id="" name="sort">
+				<input type="text" class="input-text" value="{{ image.sort }}" placeholder="" id="" name="sort">
 			</div>
 		</div>
 		<div class="row cl">
 			<label class="form-label col-xs-4 col-sm-2">允许评论：</label>
 			<div class="formControls col-xs-8 col-sm-9 skin-minimal">
 				<div class="check-box">
-					<input type="checkbox" id="checkbox-1" name="allow_comment" value="1">
+					<input type="checkbox" id="checkbox-1" name="allow_comment" value="1" {% ifequal image.allow_comment 1  %} checked{% endifequal %}>
 					<label for="checkbox-1">&nbsp;</label>
 				</div>
 			</div>
@@ -45,57 +46,61 @@
 		<div class="row cl">
 			<label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>发布日期：</label>
 			<div class="formControls col-xs-8 col-sm-9">
-				<input type="text" onfocus="WdatePicker({ dateFmt:'yyyy-MM-dd HH:mm:ss',maxDate:'#F{$dp.$D(\'datemax\')||\'%y-%M-%d\'}' })" id="datemin" class="input-text Wdate" name="up_time">
+				<input type="text" onfocus="WdatePicker({ dateFmt:'yyyy-MM-dd HH:mm:ss',maxDate:'#F{$dp.$D(\'datemax\')||\'%y-%M-%d\'}' })" id="datemin" class="input-text Wdate" name="up_time" value="{{ image.up_time|date:'Y-m-d H:i:s' }}">
 			</div>
 		</div>
 		<div class="row cl">
 			<label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>结束日期：</label>
 			<div class="formControls col-xs-8 col-sm-9">
-				<input type="text" onfocus="WdatePicker({ dateFmt:'yyyy-MM-dd HH:mm:ss',minDate:'#F{$dp.$D(\'datemin\')}' })" id="datemax" class="input-text Wdate" name="down_time">
+				<input type="text" onfocus="WdatePicker({ dateFmt:'yyyy-MM-dd HH:mm:ss',minDate:'#F{$dp.$D(\'datemin\')}' })" id="datemax" class="input-text Wdate" name="down_time" value="{{ image.down_time|date:'Y-m-d H:i:s' }}">
 			</div>
 		</div>
 		<div class="row cl">
 			<label class="form-label col-xs-4 col-sm-2">标签：</label>
 			<div class="formControls col-xs-8 col-sm-9">
-				<input type="text" class="input-text" value="" placeholder="" id="" name="tags">
+				<input type="text" class="input-text" value="{{ image.tags }}" placeholder="" id="" name="tags">
 			</div>
 		</div>
 		<div class="row cl">
 			<label class="form-label col-xs-4 col-sm-2">图片摘要：</label>
 			<div class="formControls col-xs-8 col-sm-9">
-				<textarea name="contents" cols="" rows="" class="textarea"  placeholder="说点什么...最少输入10个字符" datatype="*10-100" dragonfly="true" nullmsg="备注不能为空！"></textarea>
+				<textarea name="contents" cols="" rows="" class="textarea"  placeholder="说点什么...最少输入10个字符" datatype="*10-100" dragonfly="true" nullmsg="备注不能为空！">{{ image.contents }}</textarea>
 			</div>
 		</div>
 		<div class="row cl">
 			<label class="form-label col-xs-4 col-sm-2">缩略图：</label>
 			<div class="formControls col-xs-8 col-sm-9">
 				<div class="uploader-thum-container">
-                    <input type="text" class="input-text" readonly id="thumb" name="thumb" style="width: 50%;"/>
+                    <input type="text" class="input-text"  value="{{ image.thumb }}" readonly id="thumb" name="thumb" style="width: 50%;"/>
                     <input type="file" name="file" id="filePickers">
 			</div>
 		</div>
-		<div class="row cl">
-            <input type="hidden" value="" name="img_url" id="img_url">
-			<label class="form-label col-xs-4 col-sm-2">图片上传：</label>
-			<div class="formControls col-xs-8 col-sm-9">
-				<div class="uploader-list-container">
-					<div class="queueList">
-						<div id="dndArea" class="placeholder">
-							<div id="filePicker-2"></div>
-							<p>或将照片拖到这里，单次最多可选300张</p>
-						</div>
-					</div>
-					<div class="statusBar" style="display:none;">
-						<div class="progress"> <span class="text">0%</span> <span class="percentage"></span> </div>
-						<div class="info"></div>
-						<div class="btns">
-							<div id="filePicker2"></div>
-							<div class="uploadBtn">开始上传</div>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
+        {% ifnotequal edit 1  %}
+            <div class="row cl">
+                <input type="hidden" value="" name="img_url" id="img_url">
+                <label class="form-label col-xs-4 col-sm-2">图片上传：</label>
+                <div class="formControls col-xs-8 col-sm-9">
+                    <div class="uploader-list-container">
+                        <div class="queueList">
+                            <div id="dndArea" class="placeholder">
+                                <div id="filePicker-2"></div>
+                                <p>或将照片拖到这里，单次最多可选300张</p>
+                            </div>
+                        </div>
+                        <div class="statusBar" style="display:none;">
+                            <div class="progress"> <span class="text">0%</span> <span class="percentage"></span> </div>
+                            <div class="info"></div>
+                            <div class="btns">
+                                <div id="filePicker2"></div>
+                                <div class="uploadBtn">开始上传</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+		    </div>
+
+        {% endifnotequal %}
+
 		<div class="row cl">
 			<div class="col-xs-8 col-sm-9 col-xs-offset-4 col-sm-offset-2">
 				<button  class="btn btn-primary radius" type="submit"><i class="Hui-iconfont">&#xe632;</i> 保存并提交审核</button>
