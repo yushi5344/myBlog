@@ -14,5 +14,6 @@ urlpatterns = [
     path('upload/', image.upload),
     re_path('image_delete-(?P<id>\d+)', image.image_delete),
     re_path('image_edit-(?P<id>\d+)', image.image_edit),
+    re_path('image_show-(?P<id>\d+)', image.image_show),
     re_path('image_changestate-(?P<id>\d+)-(?P<status>\d+)', image.image_changestate),
 ]

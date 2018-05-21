@@ -113,3 +113,10 @@ def image_edit(request,id):
     image=mImage.objects.filter(id=id).first()
     edit=1
     return render(request,'Admin/image_add.html',{'image':image,'cate':cate,'edit':edit})
+
+
+def image_show(request,id):
+    image=mImage.objects.filter(id=id).first()
+    url=image.img_url.split(',')
+    length=len(url)
+    return render(request,'Admin/image_show.html',{'url':url,'len':length})

@@ -48,11 +48,11 @@
                         <td>{{ foo.c__name }}</td>
                         <td>
                             <a href="javascript:;"
-                               onClick="picture_edit('图库编辑','picture-show.html','10001')">
+                               onClick="picture_edit('图库编辑','/admin/image_show-{{ foo.id }}','{{ foo.id }}')">
                                 <img width="110" height="100" class="picture-thumb" src="\{{ foo.thumb }}">
                             </a>
                         </td>
-                        <td class="text-l"><a class="maincolor" href="javascript:;" onClick="picture_edit('图库编辑','picture-show.html','10001')">{{ foo.title }}</a></td>
+                        <td class="text-l"><a class="maincolor" href="javascript:;" onClick="picture_edit('图库编辑','/admin/image_show-{{ foo.id }}/','{{ foo.id }}')">{{ foo.title }}</a></td>
                         <td class="text-c">{{ foo.tags }}</td>
                         <td>{{ foo.add_time }}</td>
                         <td class="td-status">
