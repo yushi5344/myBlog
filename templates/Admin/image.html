@@ -11,9 +11,9 @@
 	<div class="text-c"> 日期范围：
 		<input type="text" onfocus="WdatePicker({ maxDate:'#F{$dp.$D(\'logmax\')||\'%y-%M-%d\'}' })" id="logmin" class="input-text Wdate" style="width:120px;" name="dateFrom">
 		-
-		<input type="text" onfocus="WdatePicker({ minDate:'#F{$dp.$D(\'logmin\')}',maxDate:'%y-%M-%d' })" id="logmax" class="input-text Wdate" style="width:120px;" name="dateTo">
-		<input type="text" name="searchName" id="" placeholder=" 图片名称" style="width:250px" class="input-text">
-		<button name="searchbutton" id="" class="btn btn-success" type="button"><i class="Hui-iconfont">&#xe665;</i> 搜图片</button>
+		<input type="text" onfocus="WdatePicker({ minDate:'#F{$dp.$D(\'logmin\')}' })" id="logmax" class="input-text Wdate" style="width:120px;" name="dateTo">
+		<input type="text" name="searchName" id="searchName" placeholder=" 图片名称" style="width:250px" class="input-text">
+		<button name="searchbutton" id="searchbutton" class="btn btn-success" type="button"><i class="Hui-iconfont">&#xe665;</i> 搜图片</button>
 	</div>
 	<div class="cl pd-5 bg-1 bk-gray mt-20">
         <span class="l"><a href="javascript:;" onclick="datadel()" class="btn btn-danger radius"><i class="Hui-iconfont">&#xe6e2;</i> 批量删除</a>
@@ -114,8 +114,8 @@ $(function () {
         var logmin=$('#logmin').val();
         var logmax=$('#logmax').val();
         $.cookie('searchName',searchName,{path:'admin/image'});
-        $.cookie('logmin',searchName,{path:'admin/image'});
-        $.cookie('logmax',searchName,{path:'admin/image'});
+        $.cookie('logmin',logmin,{path:'admin/image'});
+        $.cookie('logmax',logmax,{path:'admin/image'});
         window.location.reload();
     });
 });

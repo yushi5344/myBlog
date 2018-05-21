@@ -4,10 +4,16 @@ from Admin.models import Cate,Image as mImage
 from django.core.paginator import Paginator,PageNotAnInteger,EmptyPage
 import json
 import os
+from urllib import parse
 class Image(View):
     def get(self,request):
-        image=mImage.objects.all().values('id','title','thumb','tags','add_time','status','c__name')
-        print(image)
+        # print(request.COOKIES)
+        searchName=request.COOKIES.get('searchName',None)
+        if not searchName:
+            image=mImage.objects.all().values('id','title','thumb','tags','add_time','status','c__name')
+        else:
+            image=mImage.objects.filter(title=parse.unquote(searchName))
+        # print(image)
         pagesize = request.COOKIES.get('pagesize', None)
         if not pagesize:
             pagesize=2
