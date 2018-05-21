@@ -13,4 +13,5 @@ urlpatterns = [
     path('image_add/', image.image_add),
     path('upload/', image.upload),
     re_path('image_delete-(?P<id>\d+)', image.image_delete),
+    re_path('image_changestate-(?P<id>\d+)-(?P<status>\d+)', image.image_changestate),
 ]

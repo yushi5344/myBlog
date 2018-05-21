@@ -12,8 +12,8 @@ class Image(View):
         if not searchName:
             image=mImage.objects.all().values('id','title','thumb','tags','add_time','status','c__name')
         else:
-            image=mImage.objects.filter(title=parse.unquote(searchName))
-        # print(image)
+            image=mImage.objects.filter(title=parse.unquote(searchName)).values('id','title','thumb','tags','add_time','status','c__name')
+        print(image)
         pagesize = request.COOKIES.get('pagesize', None)
         if not pagesize:
             pagesize=2
@@ -85,4 +85,9 @@ def upload(request):
 def image_delete(request,id):
     result=mImage.objects.filter(id=id).delete()
     ret = {'status': True, 'msg': '删除成功'}
+    return HttpResponse(json.dumps(ret))
+
+def image_changestate(request,id,status):
+    result=mImage.objects.filter(id=id).update(status=status)
+    ret = {'status': True, 'msg': '修改成功'}
     return HttpResponse(json.dumps(ret))
