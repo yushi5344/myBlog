@@ -1,6 +1,6 @@
 # Author guomin
 from django.urls import path,re_path
-from Admin.views import login,index,image,category
+from Admin.views import login,index,image,category,article
 urlpatterns = [
     path('login/',login.Login.as_view()),
     path('index/',index.Index.as_view()),
@@ -16,4 +16,5 @@ urlpatterns = [
     re_path('image_edit-(?P<id>\d+)', image.image_edit),
     re_path('image_show-(?P<id>\d+)', image.image_show),
     re_path('image_changestate-(?P<id>\d+)-(?P<status>\d+)', image.image_changestate),
+    path('article/',article.Article.as_view()),
 ]
