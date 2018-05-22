@@ -17,4 +17,5 @@ urlpatterns = [
     re_path('image_show-(?P<id>\d+)', image.image_show),
     re_path('image_changestate-(?P<id>\d+)-(?P<status>\d+)', image.image_changestate),
     path('article/',article.Article.as_view()),
+    path('article_add/', article.article_add),
 ]
