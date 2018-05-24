@@ -33,7 +33,7 @@ def article_add(request):
         return render(request, 'Admin/article_add.html', {'cate': cate})
     if request.method == 'POST':
         ret = {'status': False, 'msg': None}
-        print(request.POST)
+        id = request.POST.get('id', None)
         title = request.POST.get('title', None)
         c_id = request.POST.get('c_id', None)
         type = request.POST.get('type', None)
@@ -42,34 +42,58 @@ def article_add(request):
         describe = request.POST.get('describe', None)
         author = request.POST.get('author', None)
         source = request.POST.get('source', None)
-        allow_comment = request.POST.get('allow_comment', None)
+        allow_comment = request.POST.get('allow_comment', 0)
         up_time = request.POST.get('up_time', None)
         down_time = request.POST.get('down_time', None)
         thumb = request.POST.get('thumb', None)
         content = request.POST.get('content', None)
-        try:
-            obj = mArticle(
-                title=title,
-                c_id=c_id,
-                type=type,
-                tags=tags,
-                sort=sort,
-                describe=describe,
-                author=author,
-                source=source,
-                allow_comment=allow_comment,
-                up_time=up_time,
-                down_time=down_time,
-                thumb=thumb,
-                content=content,
-                status=0
-            )
-            obj.save()
-            ret['status'] = True
-            ret['msg'] = '保存成功'
-        except Exception as e:
-            ret['status'] = False
-            ret['msg'] = '保存失败'
+        if not id:
+            try:
+                obj = mArticle(
+                    title=title,
+                    c_id=c_id,
+                    type=type,
+                    tags=tags,
+                    sort=sort,
+                    describe=describe,
+                    author=author,
+                    source=source,
+                    allow_comment=allow_comment,
+                    up_time=up_time,
+                    down_time=down_time,
+                    thumb=thumb,
+                    content=content,
+                    status=0
+                )
+                obj.save()
+                ret['status'] = True
+                ret['msg'] = '保存成功'
+            except Exception as e:
+                ret['status'] = False
+                ret['msg'] = '保存失败'
+        else:
+            try:
+                result=mArticle.objects.filter(id=id).update(
+                    title=title,
+                    c_id=c_id,
+                    type=type,
+                    tags=tags,
+                    sort=sort,
+                    describe=describe,
+                    author=author,
+                    source=source,
+                    allow_comment=allow_comment,
+                    up_time=up_time,
+                    down_time=down_time,
+                    thumb=thumb,
+                    content=content,
+                    status=0
+                )
+                ret['status'] = True
+                ret['msg'] = '修改成功'
+            except Exception as e:
+                ret['status'] = False
+                ret['msg'] = '修改失败'
         return HttpResponse(json.dumps(ret))
 
 
@@ -83,3 +107,7 @@ def article_delete(request,id):
     ret={'status':True,'msg':'修改成功'}
     return HttpResponse(json.dumps(ret))
 
+def article_edit(request,id):
+    cate = Cate.objects.filter(p_id=3)
+    article=mArticle.objects.filter(id=id).first()
+    return render(request, 'Admin/article_add.html', {'cate': cate,'article':article})
