@@ -18,4 +18,6 @@ urlpatterns = [
     re_path('image_changestate-(?P<id>\d+)-(?P<status>\d+)', image.image_changestate),
     path('article/',article.Article.as_view()),
     path('article_add/', article.article_add),
+    re_path('article_changestate-(?P<id>\d+)-(?P<status>\d+)', article.article_changestate),
+    re_path('article_delete-(?P<id>\d+)', article.article_delete),
 ]

@@ -3,9 +3,28 @@ from django.shortcuts import render,HttpResponse
 from django.core.paginator import Paginator,PageNotAnInteger,EmptyPage
 from Admin.models import Cate,Article as mArticle
 import json
+from urllib import parse
 class Article(View):
     def get(self,request):
-        return render(request,'Admin/article.html')
+        searchName=request.COOKIES.get('searchName',None)
+        if not searchName:
+            article=mArticle.objects.all().values('id','title','type','c__name','add_time','source','status')
+        else:
+            article=mArticle.objects.filter(title=parse.unquote(searchName)).values('id','title','type','c__name','add_time','source','status')
+        pagesize=request.COOKIES.get('pagesize',None)
+        if not pagesize:
+            pagesize=2
+        paginator=Paginator(article,pagesize)
+        print(pagesize)
+        page=request.GET.get('page')
+        count=article.count()
+        try:
+            contacts=paginator.page(page)
+        except PageNotAnInteger as e:
+            contacts=paginator.page(1)
+        except EmptyPage as e:
+            contacts=paginator.page(paginator.num_pages)
+        return render(request,'Admin/article.html',{'article':contacts,'count':count})
 
 
 def article_add(request):
@@ -52,3 +71,15 @@ def article_add(request):
             ret['status'] = False
             ret['msg'] = '保存失败'
         return HttpResponse(json.dumps(ret))
+
+
+def article_changestate(request,id,status):
+    result = mArticle.objects.filter(id=id).update(status=status)
+    ret = {'status': True, 'msg': '修改成功'}
+    return HttpResponse(json.dumps(ret))
+
+def article_delete(request,id):
+    result=mArticle.objects.filter(id=id).delete()
+    ret={'status':True,'msg':'修改成功'}
+    return HttpResponse(json.dumps(ret))
+
