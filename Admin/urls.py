@@ -1,6 +1,6 @@
 # Author guomin
 from django.urls import path,re_path
-from Admin.views import login,index,image,category,article
+from Admin.views import login,index,image,category,article,comment
 urlpatterns = [
     path('login/',login.Login.as_view()),
     path('index/',index.Index.as_view()),
@@ -21,4 +21,7 @@ urlpatterns = [
     re_path('article_changestate-(?P<id>\d+)-(?P<status>\d+)', article.article_changestate),
     re_path('article_delete-(?P<id>\d+)', article.article_delete),
     re_path('article_edit-(?P<id>\d+)', article.article_edit),
+    path('comment/',comment.Comment.as_view()),
+    re_path('comment_changestate-(?P<id>\d+)-(?P<status>\d+)', comment.comment_changestate),
+    re_path('comment_delete-(?P<id>\d+)', comment.comment_delete),
 ]

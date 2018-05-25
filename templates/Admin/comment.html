@@ -1,0 +1,204 @@
+{% extends 'Admin/master.html' %}
+{% block css %}
+
+{% endblock %}
+{% block title %}
+评论列表
+{% endblock %}
+{% block content %}
+<nav class="breadcrumb"><i class="Hui-iconfont">&#xe67f;</i> 首页 <span class="c-gray en">&gt;</span> 评论管理 <span class="c-gray en">&gt;</span> 评论列表 <a class="btn btn-success radius r" style="line-height:1.6em;margin-top:3px" href="javascript:location.replace(location.href);" title="刷新" ><i class="Hui-iconfont">&#xe68f;</i></a></nav>
+<div class="page-container">
+	<div class="text-c"> 日期范围：
+		<input type="text" onfocus="WdatePicker({ maxDate:'#F{$dp.$D(\'datemax\')||\'%y-%M-%d\'}' })" id="logmin" class="input-text Wdate" style="width:120px;">
+		-
+		<input type="text" onfocus="WdatePicker({ minDate:'#F{$dp.$D(\'datemin\')}',maxDate:'%y-%M-%d' })" id="logmax" class="input-text Wdate" style="width:120px;">
+		<input type="text" class="input-text" style="width:250px" placeholder="输入关键词" id="searchName" name="searchName">
+		<button type="submit" class="btn btn-success radius" id="searchbutton" name="searchbutton"><i class="Hui-iconfont">&#xe665;</i> 搜意见</button>
+	</div>
+	<div class="cl pd-5 bg-1 bk-gray mt-20"> <span class="l"><a href="javascript:;" onclick="datadel()" class="btn btn-danger radius"><i class="Hui-iconfont">&#xe6e2;</i> 批量删除</a> </span> <span class="r">共有数据：<strong>{{ count }}</strong> 条</span> </div>
+	<div class="mt-20">
+    每页显示：<select name="pagesizes" id="pagesize">
+            <option value="1">10页</option>
+            <option value="2">20页</option>
+            <option value="3">30页</option>
+            <option value="4">40页</option>
+        </select>
+		<table class="table table-border table-bordered table-hover table-bg table-sort">
+			<thead>
+				<tr class="text-c">
+					<th width="25"><input type="checkbox" name="" value=""></th>
+					<th width="60">ID</th>
+					<th width="60">用户名</th>
+					<th>留言内容</th>
+					<th>审核状态</th>
+					<th width="100">操作</th>
+				</tr>
+			</thead>
+			<tbody>
+            {% for foo in comment %}
+            <tr class="text-c">
+					<td><input type="checkbox" value="{{ foo.id }}" name=""></td>
+					<td>{{ foo.id }}</td>
+					<td>{{ foo.username }}</td>
+					<td class="text-l"><div class="c-999 f-12">
+							<u style="cursor:pointer" class="text-primary">{{ foo.username }}</u> <time >{{ foo.add_time|date:'Y-m-d H:i:s' }}</time> <span class="ml-20">{{ foo.email }}</span></div>
+							<div class="f-12 c-999"><a href="http://www.h-ui.net/Hui-4.22-comment.shtml" target="_blank" title="{{ foo.a__title }}">http://www.h-ui.net/Hui-4.22-comment.shtml</a></div>
+						<div>{{ foo.content }}</div></td>
+                    <td class="td-status">
+                        {% ifequal foo.status 0 %}<span class="label label-primary radius">待审核</span>{% endifequal %}
+                        {% ifequal foo.status 1 %}<span class="label label-success radius">已显示</span>{% endifequal %}
+                        {% ifequal foo.status 2 %}<span class="label label-warning radius">不显示</span>{% endifequal %}
+                    </td>
+					<td class="td-manage">
+                        {% ifequal foo.status 0 %}
+                                 <a style="text-decoration:none"
+                                onClick="comment_start(this,'{{ foo.id }}')"
+                                href="javascript:;"
+                                title="显示评论">
+                                <i class="Hui-iconfont">&#xe603;</i>
+                                </a>
+                             {% endifequal %}
+                            {% ifequal foo.status 1 %}
+                                <a style="text-decoration:none"
+                                onClick="comment_stop(this,'{{ foo.id }}')"
+                                href="javascript:;"
+                                title="隐藏评论">
+                                <i class="Hui-iconfont">&#xe6de;</i>
+                                </a>
+                            {% endifequal %}
+                            {% ifequal foo.status 2 %}
+                                <a style="text-decoration:none"
+                                onClick="comment_start(this,'{{ foo.id }}')"
+                                href="javascript:;"
+                                title="重新显示">
+                                <i class="Hui-iconfont">&#xe603;</i>
+                                </a>
+                            {% endifequal %}
+                        <a title="删除" href="javascript:;" onclick="comment_del(this,'{{ foo.id }}')" class="ml-5" style="text-decoration:none"><i class="Hui-iconfont">&#xe6e2;</i></a></td>
+				</tr>
+            {% endfor %}
+			</tbody>
+		</table>
+    <ul class="pagination">
+            {% if comment.has_previous %}
+                <li class="active"><a href="?page={{comment.previous_page_number}}">«</a></li>
+            {% else %}
+                <li class="disabled"><span>«</span></li>
+            {% endif %}
+            {% for pg in comment.paginator.page_range %}
+                {% ifequal pg  comment.number %}
+                <li class="active"><span>{{ pg }}</span></li>
+                {% else %}
+                <li><a href="?page={{pg}}">{{ pg }}</a></li>
+                {% endifequal %}
+            {% endfor %}
+            {% if comment.has_next %}
+            <li><a href="?page={{comment.next_page_number}}">»</a></li>
+            {% else %}
+                <li class="disabled"><span>»</span></li>
+            {% endif %}
+        </ul>
+	</div>
+</div>
+{% endblock %}
+{% block js %}
+<script type="text/javascript" src="/static/lib/My97DatePicker/WdatePicker.js"></script>
+<script type="text/javascript">
+$(function(){
+var v=$.cookie('pagesize');
+    if (v!=undefined){
+        $('#pagesize').val(v);
+    }
+    $('#pagesize').change(function(){
+        var pagesize=$(this).val();
+        $.cookie('pagesize', pagesize,{path:'admin/comment'});
+        window.location.reload();
+    });
+    var p=$.cookie('searchName');
+    if (p!=undefined){
+        $('#searchName').val(p);
+    }
+    var logmn=$.cookie('logmin');
+    if (p!=undefined){
+        $('#logmin').val(logmn);
+    }
+    var logmx=$.cookie('logmax');
+    if (p!=undefined){
+        $('#logmax').val(logmx);
+    }
+    $('#searchbutton').click(function () {
+        var searchName=$('#searchName').val();
+        var logmin=$('#logmin').val();
+        var logmax=$('#logmax').val();
+        $.cookie('searchName',searchName,{path:'admin/comment'});
+        $.cookie('logmin',logmin,{path:'admin/comment'});
+        $.cookie('logmax',logmax,{path:'admin/comment'});
+        window.location.reload();
+    });
+
+});
+/*资讯-下架*/
+function comment_stop(obj,id){
+	layer.confirm('确认要隐藏评论吗？',function(index){
+		$.ajax({
+            type:'GET',
+            url:'comment_changestate-'+id+'-2',
+            dataType: 'json',
+            success:function (data) {
+                if (data.status){
+                    layer.msg('已隐藏!',{icon: 5,time:1000});
+                    setTimeout(function () {
+                        window.location.reload();
+                    },2000);
+                } else{
+                    layer.msg('设置失败!',{icon: 5,time:1000});
+                }
+            }
+        });
+	});
+}
+
+/*资讯-发布*/
+function comment_start(obj,id){
+	layer.confirm('确认要显示吗？',function(index){
+		$.ajax({
+            type:'GET',
+            url:'comment_changestate-'+id+'-1',
+            dataType: 'json',
+            success:function (data) {
+                if (data.status){
+                    layer.msg('以显示!',{icon: 6,time:1000});
+                    setTimeout(function () {
+                        window.location.reload();
+                    },2000);
+                } else{
+                    layer.msg('设置!',{icon: 5,time:1000});
+                }
+            }
+        });
+	});
+}
+/*资讯-删除*/
+function comment_del(obj,id){
+	layer.confirm('确认要删除吗？',function(index){
+		$.ajax({
+			type: 'GET',
+			url: 'comment_delete-'+id,
+			dataType: 'json',
+			success: function(data){
+			    if(data.status){
+			        $(obj).parents("tr").remove();
+				    layer.msg('已删除!',{icon:1,time:1000});
+                }else {
+			        layer.msg('删除失败',{icon:5,time:1000});
+                }
+			},
+			error:function(data) {
+				console.log(data.msg);
+			},
+		});
+	});
+}
+
+</script>
+{% endblock %}
