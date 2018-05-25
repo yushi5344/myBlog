@@ -61,3 +61,14 @@ class Article(models.Model):
     type=models.IntegerField(null=True)
     content = models.TextField(null=True)
 
+
+#评论
+class Comment(models.Model):
+    id=models.AutoField(primary_key=True)
+    a=models.ForeignKey('Article',to_field='id',on_delete=models.CASCADE,null=True)
+    content=models.TextField(null=True)
+    username=models.CharField(max_length=40)
+    email=models.EmailField(max_length=32)
+    status=models.IntegerField(null=True)
+    add_time = models.DateTimeField(auto_now_add=True, null=True)
+
