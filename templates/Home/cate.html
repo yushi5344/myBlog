@@ -1,0 +1,71 @@
+{% extends 'Home/master.html' %}
+{% block content %}
+<!-- Header -->
+    <header id="header">
+        <a href="index.html" class="logo">GUOMIN</a>
+    </header>
+    <!-- Nav -->
+    <nav id="nav">
+        <ul class="links">
+            <li class="active"><a href="/">首页</a></li>
+            {% for foo in cate %}
+            <li><a href="/home/cate-{{ foo.id }}.html">{{ foo.name }}</a></li>
+            {% endfor %}
+        </ul>
+        <ul class="icons">
+            <li><a href="https://github.com/yushi5344/" class="icon fa-github"><span class="label">GitHub</span></a></li>
+        </ul>
+    </nav>
+    <div id="main">
+        <input type="hidden" value="{{ catename }}" class="catename">
+        <section>
+            <ul class="dates">
+                    {% if article %}
+                        {% for foo in article %}
+                            <li>
+                                <span class="date"> <strong>{{ foo.add_time|date:'M' }}</strong>{{ foo.add_time|date:'d' }}</span>
+                                <h3><a href="">{{ foo.title }}</a></h3>
+                                <p class="art_view">作者：{{ foo.author }} </p>
+                                <p>标签：{{ foo.tags }}</p>
+                            </li>
+                        {% endfor %}
+                    {% else %}
+                        本类下暂无内容
+                    {% endif %}
+            </ul>
+        </section>
+        <footer>
+            <div class="pagination">
+                {% if article.has_previous %}
+                    <a href="?page={{article.previous_page_number}}" class="previous">Prev</a>
+                {% else %}
+                    <span class="extra">Prev</span>
+                {% endif %}
+                {% for pg in article.paginator.page_range %}
+                    {% ifequal pg  article.number %}
+                        <span class="extra">{{ pg }}</span>
+                    {% else %}
+                        <a href="?page={{pg}}" class="page">{{ pg }}</a>
+                    {% endifequal %}
+                {% endfor %}
+                {% if article.has_next %}
+                    <a href="?page={{article.next_page_number}}" class="next">Next</a>
+                {% else %}
+                    <span class="extra">Next</span>
+                {% endif %}
+            </div>
+        </footer>
+    </div>
+{% endblock %}
+{% block js %}
+<script>
+        $(function(){
+           $('.links li').each(function(index){
+               if($(this).children('a').text()==$('.catename').val()){
+                   $('.links li').removeClass('active');
+                   $(this).addClass('active');
+               }
+           });
+        });
+</script>
+{% endblock %}
