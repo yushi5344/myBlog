@@ -24,4 +24,5 @@ urlpatterns = [
     path('comment/',comment.Comment.as_view()),
     re_path('comment_changestate-(?P<id>\d+)-(?P<status>\d+)', comment.comment_changestate),
     re_path('comment_delete-(?P<id>\d+)', comment.comment_delete),
+    re_path('comment_add/', comment.comment_add),
 ]

@@ -16,4 +16,4 @@ class Cate(View):
             contacts=paginator.page(Paginator.num_pages)
         cate = mCate.objects.filter(p_id=3).values('id', 'name')
         catename=mCate.objects.filter(id=nid).first()
-        return render(request,'Home/cate.html',{'cate':cate,'article':contacts,'catename':catename.name})
+        return render(request,'Home/cate.html',{'cate':cate,'article':contacts,'catename':catename})

@@ -17,14 +17,14 @@
         </ul>
     </nav>
     <div id="main">
-        <input type="hidden" value="{{ catename }}" class="catename">
+        <input type="hidden" value="{{ catename.name }}" class="catename">
         <section>
             <ul class="dates">
                     {% if article %}
                         {% for foo in article %}
                             <li>
                                 <span class="date"> <strong>{{ foo.add_time|date:'M' }}</strong>{{ foo.add_time|date:'d' }}</span>
-                                <h3><a href="">{{ foo.title }}</a></h3>
+                                <h3><a href="/home/article-{{ foo.id }}-{{ catename.id }}.html">{{ foo.title }}</a></h3>
                                 <p class="art_view">作者：{{ foo.author }} </p>
                                 <p>标签：{{ foo.tags }}</p>
                             </li>

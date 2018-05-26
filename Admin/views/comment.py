@@ -35,3 +35,23 @@ def comment_delete(request,id):
     result=mComment.objects.filter(id=id).delete()
     ret = {'status': True, 'msg': '删除成功'}
     return HttpResponse(json.dumps(ret))
+
+def comment_add(request):
+    ret = {'status': False, 'msg': None}
+    username= request.POST.get('username', None)
+    email = request.POST.get('email', None)
+    a_id = request.POST.get('a_id', None)
+    try:
+        obj = mComment(
+            username=username,
+            email=email,
+            a_id=a_id,
+            status=0
+        )
+        obj.save()
+        ret['status'] = True
+        ret['msg'] = '评论成功，请等待审核！'
+    except Exception as e:
+        ret['status'] = False
+        ret['msg'] = '评论失败'
+    return HttpResponse(json.dumps(ret))

@@ -1,195 +1,125 @@
 {% extends 'Home/master.html' %}
 {% block content %}
     <header id="header">
-        <a href="index.html" class="logo">Massively</a>
+        <a href="index.html" class="logo">GUOMIN</a>
     </header>
-
     <!-- Nav -->
     <nav id="nav">
         <ul class="links">
-            <li><a href="index.html">This is Massively</a></li>
-            <li class="active"><a href="generic.html">Generic Page</a></li>
-            <li><a href="elements.html">Elements Reference</a></li>
+            <li class="active"><a href="/">首页</a></li>
+            {% for foo in cate %}
+                <li><a href="/home/cate-{{ foo.id }}.html">{{ foo.name }}</a></li>
+            {% endfor %}
         </ul>
         <ul class="icons">
-            <li><a href="#" class="icon fa-twitter"><span class="label">Twitter</span></a></li>
-            <li><a href="#" class="icon fa-facebook"><span class="label">Facebook</span></a></li>
-            <li><a href="#" class="icon fa-instagram"><span class="label">Instagram</span></a></li>
-            <li><a href="#" class="icon fa-github"><span class="label">GitHub</span></a></li>
+            <li><a href="https://github.com/yushi5344/" class="icon fa-github"><span class="label">GitHub</span></a>
+            </li>
         </ul>
     </nav>
     <div id="main">
-
+        <input type="hidden" value="{{ catename.name }}" class="catename">
         <!-- Post -->
         <section class="post">
             <header class="major">
-                <span class="date">April 25, 2017</span>
-                <h1>This is a<br/>
-                    Generic Page</h1>
-                <p>Aenean ornare velit lacus varius enim ullamcorper proin aliquam<br/>
-                    facilisis ante sed etiam magna interdum congue. Lorem ipsum dolor<br/>
-                    amet nullam sed etiam veroeros.</p>
+                <span class="date">{{ article.add_time|date:'Y-m-d H:i:s' }}</span>
+                <h1>{{ article.title }}</h1>
+                <p>{{ article.describe }}</p>
             </header>
-            <div class="image main"><img src="images/pic01.jpg" alt=""/></div>
-            <p>Donec eget ex magna. Interdum et malesuada fames ac ante ipsum primis in faucibus. Pellentesque venenatis
-                dolor imperdiet dolor mattis sagittis. Praesent rutrum sem diam, vitae egestas enim auctor sit amet.
-                Pellentesque leo mauris, consectetur id ipsum sit amet, fergiat. Pellentesque in mi eu massa lacinia
-                malesuada et a elit. Donec urna ex, lacinia in purus ac, pretium pulvinar mauris. Nunc lorem mauris,
-                fringilla in aliquam at, euismod in lectus. Pellentesque habitant morbi tristique senectus et netus et
-                malesuada fames ac turpis egestas. Curabitur sapien risus, commodo eget turpis at, elementum convallis
-                enim turpis, lorem ipsum dolor sit amet nullam.</p>
-            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis dapibus rutrum facilisis. Class aptent
-                taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Etiam tristique libero eu
-                nibh porttitor fermentum. Nullam venenatis erat id vehicula viverra. Nunc ultrices eros ut ultricies
-                condimentum. Mauris risus lacus, blandit sit amet venenatis non, bibendum vitae dolor. Nunc lorem
-                mauris, fringilla in aliquam at, euismod in lectus. Pellentesque habitant morbi tristique senectus et
-                netus et malesuada fames ac turpis egestas. In non lorem sit amet elit placerat maximus. Pellentesque
-                aliquam maximus risus. Donec eget ex magna. Interdum et malesuada fames ac ante ipsum primis in
-                faucibus. Pellentesque venenatis dolor imperdiet dolor mattis sagittis. Praesent rutrum sem diam, vitae
-                egestas enim auctor sit amet. Pellentesque leo mauris, consectetur id ipsum.</p>
+            <div class="image main"><img src="/{{ article.thumb }}" alt=""/></div>
+            {{ article.content|safe }}
+            {% if comment %}
+                <hr>
+                <h3>精彩评论</h3>
+                {% for foo in comment %}
+                    <dl>
+                        <dd>
+                            <blockquote>
+                                <p>{{ foo.username }}　　{{ foo.add_time|date:'Y-m-d H:i:s' }}</p>
+                                {{ foo.content }}
+                            </blockquote>
+                        </dd>
+                    </dl>
+                    <hr>
+                {% endfor %}
+            {% else %}
+                <p>暂无评论</p>
+            {% endif %}
+            <h3>添加评论</h3>
+
+            <form id="form-comment-add" class="alt form form-horizontal">
+                {% csrf_token %}
+                <input type="hidden" value="{{ article.id }}" name="a_id">
+                <div class="row uniform">
+                    <div class="6u 12u$(xsmall)">
+                        <input type="text" name="username" id="username" value="" placeholder="用户名"/>
+                    </div>
+                    <div class="6u$ 12u$(xsmall)">
+                        <input type="email" name="email" id="email" value="" placeholder="邮件"/>
+                    </div>
+                    <div class="12u$">
+                        <textarea name="content" id="content" placeholder="请输入内容"
+                                  rows="6"></textarea>
+                    </div>
+                    <!-- Break -->
+                    <div class="12u$">
+                        <ul class="actions">
+                            <li><input type="button" value="提交" class="special"/></li>
+                            <li><input type="reset" value="重置"/></li>
+                        </ul>
+                    </div>
+                </div>
+            </form>
         </section>
 
     </div>
 {% endblock %}
-<!DOCTYPE HTML>
-<!--
-	Massively by HTML5 UP
-	html5up.net | @ajlkn
-	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
--->
-<html>
-<head>
-    <title>Generic Page - Massively by HTML5 UP</title>
-    <meta charset="utf-8"/>
-    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no"/>
-    <link rel="stylesheet" href="assets/css/main.css"/>
-    <noscript>
-        <link rel="stylesheet" href="assets/css/noscript.css"/>
-    </noscript>
-</head>
-<body class="is-loading">
-
-<!-- Wrapper -->
-<div id="wrapper">
-
-    <!-- Header -->
-    <header id="header">
-        <a href="index.html" class="logo">Massively</a>
-    </header>
-
-    <!-- Nav -->
-    <nav id="nav">
-        <ul class="links">
-            <li><a href="index.html">This is Massively</a></li>
-            <li class="active"><a href="generic.html">Generic Page</a></li>
-            <li><a href="elements.html">Elements Reference</a></li>
-        </ul>
-        <ul class="icons">
-            <li><a href="#" class="icon fa-twitter"><span class="label">Twitter</span></a></li>
-            <li><a href="#" class="icon fa-facebook"><span class="label">Facebook</span></a></li>
-            <li><a href="#" class="icon fa-instagram"><span class="label">Instagram</span></a></li>
-            <li><a href="#" class="icon fa-github"><span class="label">GitHub</span></a></li>
-        </ul>
-    </nav>
-
-    <!-- Main -->
-    <div id="main">
-
-        <!-- Post -->
-        <section class="post">
-            <header class="major">
-                <span class="date">April 25, 2017</span>
-                <h1>This is a<br/>
-                    Generic Page</h1>
-                <p>Aenean ornare velit lacus varius enim ullamcorper proin aliquam<br/>
-                    facilisis ante sed etiam magna interdum congue. Lorem ipsum dolor<br/>
-                    amet nullam sed etiam veroeros.</p>
-            </header>
-            <div class="image main"><img src="images/pic01.jpg" alt=""/></div>
-            <p>Donec eget ex magna. Interdum et malesuada fames ac ante ipsum primis in faucibus. Pellentesque venenatis
-                dolor imperdiet dolor mattis sagittis. Praesent rutrum sem diam, vitae egestas enim auctor sit amet.
-                Pellentesque leo mauris, consectetur id ipsum sit amet, fergiat. Pellentesque in mi eu massa lacinia
-                malesuada et a elit. Donec urna ex, lacinia in purus ac, pretium pulvinar mauris. Nunc lorem mauris,
-                fringilla in aliquam at, euismod in lectus. Pellentesque habitant morbi tristique senectus et netus et
-                malesuada fames ac turpis egestas. Curabitur sapien risus, commodo eget turpis at, elementum convallis
-                enim turpis, lorem ipsum dolor sit amet nullam.</p>
-            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis dapibus rutrum facilisis. Class aptent
-                taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Etiam tristique libero eu
-                nibh porttitor fermentum. Nullam venenatis erat id vehicula viverra. Nunc ultrices eros ut ultricies
-                condimentum. Mauris risus lacus, blandit sit amet venenatis non, bibendum vitae dolor. Nunc lorem
-                mauris, fringilla in aliquam at, euismod in lectus. Pellentesque habitant morbi tristique senectus et
-                netus et malesuada fames ac turpis egestas. In non lorem sit amet elit placerat maximus. Pellentesque
-                aliquam maximus risus. Donec eget ex magna. Interdum et malesuada fames ac ante ipsum primis in
-                faucibus. Pellentesque venenatis dolor imperdiet dolor mattis sagittis. Praesent rutrum sem diam, vitae
-                egestas enim auctor sit amet. Pellentesque leo mauris, consectetur id ipsum.</p>
-        </section>
-
-    </div>
-
-    <!-- Footer -->
-    <footer id="footer">
-        <section>
-            <form method="post" action="#">
-                <div class="field">
-                    <label for="name">Name</label>
-                    <input type="text" name="name" id="name"/>
-                </div>
-                <div class="field">
-                    <label for="email">Email</label>
-                    <input type="text" name="email" id="email"/>
-                </div>
-                <div class="field">
-                    <label for="message">Message</label>
-                    <textarea name="message" id="message" rows="3"></textarea>
-                </div>
-                <ul class="actions">
-                    <li><input type="submit" value="Send Message"/></li>
-                </ul>
-            </form>
-        </section>
-        <section class="split contact">
-            <section class="alt">
-                <h3>Address</h3>
-                <p>1234 Somewhere Road #87257<br/>
-                    Nashville, TN 00000-0000</p>
-            </section>
-            <section>
-                <h3>Phone</h3>
-                <p><a href="#">(000) 000-0000</a></p>
-            </section>
-            <section>
-                <h3>Email</h3>
-                <p><a href="#">info@untitled.tld</a></p>
-            </section>
-            <section>
-                <h3>Social</h3>
-                <ul class="icons alt">
-                    <li><a href="#" class="icon alt fa-twitter"><span class="label">Twitter</span></a></li>
-                    <li><a href="#" class="icon alt fa-facebook"><span class="label">Facebook</span></a></li>
-                    <li><a href="#" class="icon alt fa-instagram"><span class="label">Instagram</span></a></li>
-                    <li><a href="#" class="icon alt fa-github"><span class="label">GitHub</span></a></li>
-                </ul>
-            </section>
-        </section>
-    </footer>
-
-    <!-- Copyright -->
-    <div id="copyright">
-        <ul>
-            <li>&copy; Untitled</li>
-            <li>Design: <a href="https://html5up.net">HTML5 UP</a></li>
-        </ul>
-    </div>
-
-</div>
-
-<!-- Scripts -->
-<script src="assets/js/jquery.min.js"></script>
-<script src="assets/js/jquery.scrollex.min.js"></script>
-<script src="assets/js/jquery.scrolly.min.js"></script>
-<script src="assets/js/skel.min.js"></script>
-<script src="assets/js/util.js"></script>
-<script src="assets/js/main.js"></script>
-
-</body>
-</html>
+{% block js %}
+<script type="text/javascript" src="/static/js/jquery_validation/jquery.validate.js"></script>
+<script type="text/javascript" src="/static/js/jquery_validation/validate-methods.js"></script>
+<script type="text/javascript" src="/static/js/jquery_validation/messages_zh.js"></script>
+    <script>
+        $(function () {
+            $('.links li').each(function (index) {
+                if ($(this).children('a').text() == $('.catename').val()) {
+                    $('.links li').removeClass('active');
+                    $(this).addClass('active');
+                }
+            });
+            //表单验证
+            $("#form-comment-add").validate({
+                rules:{
+                    username:{
+                        required:true,
+                    },
+                    email:{
+                        required:true,
+                    },
+                    content:{
+                        required:true,
+                    }
+                },
+                onkeyup:false,
+                focusCleanup:true,
+                success:"valid",
+                submitHandler:function(form){
+                    alert(1);
+                    $(form).ajaxSubmit({
+                        url: "/admin/comment_add/",
+                        type: 'POST',
+                        dataType: 'json',
+                        success: function (res) {
+                            if (res.status) {
+                                layer.msg(res.msg);
+                            } else {
+                                layer.alert(res.msg, {
+                                    skin: 'layui-layer-molv' //样式类名
+                                    , closeBtn: 0
+                                });
+                            }
+                        }
+                    });
+                }
+            });
+        });
+    </script>
+{% endblock %}
