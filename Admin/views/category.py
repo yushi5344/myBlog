@@ -1,11 +1,14 @@
 from django.views import View
-from django.shortcuts import render,HttpResponse
+from django.shortcuts import render,HttpResponse,redirect
 from django.core.paginator import Paginator,PageNotAnInteger,EmptyPage
 from Admin.models import Cate
 import json
 from urllib import parse
 class Category(View):
     def get(self,request):
+        v = request.session.get('is_login', None)
+        if not v:
+            return redirect('/admin/login')
         searchName=request.COOKIES.get('searchName',None)
         if not searchName:
             cat = Cate.objects.all()

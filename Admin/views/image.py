@@ -1,4 +1,4 @@
-from django.shortcuts import render,HttpResponse
+from django.shortcuts import render,HttpResponse,redirect
 from django.views import View
 from Admin.models import Cate,Image as mImage
 from django.core.paginator import Paginator,PageNotAnInteger,EmptyPage
@@ -7,6 +7,9 @@ import os
 from urllib import parse
 class Image(View):
     def get(self,request):
+        v = request.session.get('is_login', None)
+        if not v:
+            return redirect('/admin/login')
         # print(request.COOKIES)
         searchName=request.COOKIES.get('searchName',None)
         if not searchName:

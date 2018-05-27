@@ -1,11 +1,14 @@
 from django.views import View
-from django.shortcuts import render,HttpResponse
+from django.shortcuts import render,HttpResponse,redirect
 from django.core.paginator import Paginator,PageNotAnInteger,EmptyPage
 from Admin.models import Comment as mComment
 import json
 from urllib import parse
 class Comment(View):
     def get(self,request):
+        v = request.session.get('is_login', None)
+        if not v:
+            return redirect('/admin/login')
         searchName=request.COOKIES.get('searchName',None)
         if not searchName:
             comment=mComment.objects.all().values('id','content','username','email','status','add_time','a__title')

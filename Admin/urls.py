@@ -3,6 +3,7 @@ from django.urls import path,re_path
 from Admin.views import login,index,image,category,article,comment
 urlpatterns = [
     path('login/',login.Login.as_view()),
+    path('logout/',login.logout),
     path('index/',index.Index.as_view()),
     path('welcome/',index.Welcome.as_view()),
     path('image/',image.Image.as_view()),

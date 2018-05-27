@@ -1,5 +1,5 @@
 # Author guomin
-from django.shortcuts import render,HttpResponse
+from django.shortcuts import render,HttpResponse,redirect
 from django.views import View
 from hashlib import sha1
 from Admin.models import AdminUser
@@ -8,6 +8,9 @@ import json
 #登录界面
 class Login(View):
     def get(self,request):
+        v = request.session.get('is_login', None)
+        if  v:
+            return redirect('/admin/index')
         return render(request,'Admin/login.html')
 
     def post(self,request):
@@ -36,5 +39,7 @@ class Login(View):
         rep=HttpResponse(json.dumps(ret))
         return HttpResponse(rep)
 
-
+def logout(request):
+    request.session.clear()
+    return redirect('/admin/login')
 
