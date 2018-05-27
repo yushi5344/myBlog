@@ -63,8 +63,8 @@
                     <!-- Break -->
                     <div class="12u$">
                         <ul class="actions">
-                            <li><input type="button" value="提交" class="special"/></li>
-                            <li><input type="reset" value="重置"/></li>
+                            <li><button type="submit"  class="special" id="submit">提交</button></li>
+                            <li><input type="reset" id="reset" value="重置"/></li>
                         </ul>
                     </div>
                 </div>
@@ -74,6 +74,7 @@
     </div>
 {% endblock %}
 {% block js %}
+<script type="text/javascript" src="/static/js/layer/2.4/layer.js"></script>
 <script type="text/javascript" src="/static/js/jquery_validation/jquery.validate.js"></script>
 <script type="text/javascript" src="/static/js/jquery_validation/validate-methods.js"></script>
 <script type="text/javascript" src="/static/js/jquery_validation/messages_zh.js"></script>
@@ -102,19 +103,17 @@
                 focusCleanup:true,
                 success:"valid",
                 submitHandler:function(form){
-                    alert(1);
-                    $(form).ajaxSubmit({
-                        url: "/admin/comment_add/",
-                        type: 'POST',
-                        dataType: 'json',
-                        success: function (res) {
-                            if (res.status) {
-                                layer.msg(res.msg);
-                            } else {
-                                layer.alert(res.msg, {
-                                    skin: 'layui-layer-molv' //样式类名
-                                    , closeBtn: 0
-                                });
+                    $.ajax({
+                        url:'/admin/comment_add/',
+                        dataType:'json',
+                        type:'POST',
+                        data:$('form').serialize(),
+                        success:function (data) {
+                            if(data.status){
+                                layer.msg(data.msg,{icon:1,time:1000});
+                                $('#reset').trigger('click');
+                            }else {
+                                layer.msg(data.msg,{icon:5,time:1000});
                             }
                         }
                     });

@@ -28,71 +28,55 @@
     </nav>
     <!-- Main -->
     <div id="main">
-        <!-- Featured Post -->
-        <article class="post featured">
-            <header class="major">
-                <span class="date">April 25, 2017</span>
-                <h2><a href="#">And this is a<br/>
-                    大图所在</a></h2>
-                <p>Aenean ornare velit lacus varius enim ullamcorper proin aliquam<br/>
-                    facilisis ante sed etiam magna interdum congue. Lorem ipsum dolor<br/>
-                    amet nullam sed etiam veroeros.</p>
-            </header>
-            <a href="#" class="image main"><img src="/upload/屏幕截图(10).png" alt=""/></a>
-            <ul class="actions">
-                <li><a href="#" class="button big">Full Story</a></li>
-            </ul>
-        </article>
-        <!-- Posts -->
-        <section class="posts">
-            <article>
-                <header>
-                    <span class="date">April 24, 2017</span>
-                    <h2><a href="#">Sed magna<br/>
-                        ipsum faucibus</a></h2>
-                </header>
-                <a href="#" class="image fit"><img src="/upload/527173_101341426675322_746307545_n.JPG" alt=""/></a>
-                <p>Donec eget ex magna. Interdum et malesuada fames ac ante ipsum primis in faucibus. Pellentesque
-                    venenatis dolor imperdiet dolor mattis sagittis magna etiam.</p>
-                <ul class="actions">
-                    <li><a href="#" class="button">Full Story</a></li>
-                </ul>
-            </article>
-            <article>
-                <header>
-                    <span class="date">April 22, 2017</span>
-                    <h2><a href="#">Primis eget<br/>
-                        imperdiet lorem</a></h2>
-                </header>
-                <a href="#" class="image fit"><img src="/upload/574e9258d109b3de78d213f9ccbf6c81800a4c36.png"
-                                                   alt=""/></a>
-                <p>Donec eget ex magna. Interdum et malesuada fames ac ante ipsum primis in faucibus. Pellentesque
-                    venenatis dolor imperdiet dolor mattis sagittis magna etiam.</p>
-                <ul class="actions">
-                    <li><a href="#" class="button">Full Story</a></li>
-                </ul>
-            </article>
-        </section>
+        {% for foo in article %}
+            {% if forloop.first %}
+                <article class="post featured">
+                    <header class="major">
+                        <span class="date">{{ foo.add_time|date:'Y-m-d H:i:s' }}</span>
+                        <h2><a href="/home/article-{{ foo.id }}-{{ foo.c_id }}.html">{{ foo.title }}</a></h2>
+                        <p>{{ foo.describe }}</p>
+                    </header>
+                    <a href="/home/article-{{ foo.id }}-{{ foo.c_id }}.html" class="image main"><img src="/{{ foo.thumb }}" alt="{{ foo.title }}"/></a>
+                    <ul class="actions">
+                        <li><a href="/home/article-{{ foo.id }}-{{ foo.c_id }}.html" class="button big">Full Story</a></li>
+                    </ul>
+                </article>
+                <section class="posts">
+            {% else %}
+                <article>
+                    <header>
+                        <span class="date">{{ foo.add_time|date:'Y-m-d H:i:s' }}</span>
+                        <h2><a href="/home/article-{{ foo.id }}-{{ foo.c_id }}.html">{{ foo.title }}</a></h2>
+                    </header>
+                    <a href="/home/article-{{ foo.id }}-{{ foo.c_id }}.html" class="image fit"><img src="/{{ foo.thumb }}" alt="{{ foo.title }}"/></a>
+                    <p>{{ foo.describe }}</p>
+                    <ul class="actions">
+                        <li><a href="/home/article-{{ foo.id }}-{{ foo.c_id }}.html" class="button">Full Story</a></li>
+                    </ul>
+                </article>
+                {% if forloop.last %}
+                </section>
+                {% endif %}
+            {% endif %}
+        {% endfor %}
         <section>
             <ul class="actions" style="text-align: center">
                <li><a href="#" class="button">Gallery</a></li>
             </ul>
-            <span class="image fit"><img src="/upload/屏幕截图(10).png" alt=""/></span>
-            <div class="box alt">
-                <div class="row 50% uniform">
-                    <div class="4u"><span class="image fit"><img src="/upload/屏幕截图(10).png" alt=""/></span></div>
-                    <div class="4u"><span class="image fit"><img src="/upload/屏幕截图(10).png" alt=""/></span></div>
-                    <div class="4u$"><span class="image fit"><img src="/upload/屏幕截图(10).png" alt=""/></span></div>
-                    <!-- Break -->
-                    <div class="4u"><span class="image fit"><img src="/upload/屏幕截图(10).png" alt=""/></span></div>
-                    <div class="4u"><span class="image fit"><img src="/upload/屏幕截图(10).png" alt=""/></span></div>
-                    <div class="4u$"><span class="image fit"><img src="/upload/屏幕截图(10).png" alt=""/></span></div>
-                    <!-- Break -->
-                    <div class="4u"><span class="image fit"><img src="/upload/屏幕截图(10).png" alt=""/></span></div>
-                    <div class="4u"><span class="image fit"><img src="/upload/屏幕截图(10).png" alt=""/></span></div>
-                    <div class="4u$"><span class="image fit"><img src="/upload/屏幕截图(10).png" alt=""/></span></div>
-                </div>
-            </div>
+            {% for foo in image %}
+                {% if forloop.first %}
+                    <span class="image fit"><img src="/{{ foo.thumb }}" alt="{{ foo.title }}"/></span>
+                    <div class="box alt">
+                        <div class="row 50% uniform">
+                {% else %}
+                    <div
+                    {% ifequal  forloop.counter0|divisibleby:3 0 %}class="4u"{% else %} class="4u$"{% endifequal %}><span class="image fit"><img src="/{{ foo.thumb }}" alt="{{ foo.title }}"/></span></div>
+                    {% if forloop.last %}
+                            </div>
+                        </div>
+                    {% endif %}
+                {% endif %}
+            {% endfor %}
         </section>
     </div>
 {% endblock %}

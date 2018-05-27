@@ -40,12 +40,14 @@ def comment_add(request):
     ret = {'status': False, 'msg': None}
     username= request.POST.get('username', None)
     email = request.POST.get('email', None)
+    content = request.POST.get('content', None)
     a_id = request.POST.get('a_id', None)
     try:
         obj = mComment(
             username=username,
             email=email,
             a_id=a_id,
+            content=content,
             status=0
         )
         obj.save()
